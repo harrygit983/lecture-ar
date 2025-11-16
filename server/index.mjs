@@ -27,9 +27,8 @@ app.listen(PORT, "0.0.0.0", () => {
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://your-frontend-name.vercel.app" // replace with real Vercel URL
+  "chatvision-kon9r2ruy-harrygit983s-projects.vercel.app" // replace with real Vercel URL
 ];
-
 app.use(
   cors({
     origin: (origin, callback) => {
