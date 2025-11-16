@@ -17,7 +17,29 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors({ origin: true }));
+app.get("/", (req, res) => {
+  res.send("Hello from Render backend!");
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://your-frontend-name.vercel.app" // replace with real Vercel URL
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow non-browser tools / curl / Postman (no origin)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    }
+  })
+);
 app.use(express.json());
 
 // Ensure uploads dir exists
@@ -25,6 +47,9 @@ const uploadsDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 // Multer config for file uploads
 const storage = multer.diskStorage({
