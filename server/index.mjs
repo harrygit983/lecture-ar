@@ -19,15 +19,12 @@ const PORT = process.env.PORT || 4000;
 
 // ----- HARD CORS FIX: add headers manually -----
 app.use((req, res, next) => {
-  // Allow your Vercel app and local dev
   const origin = req.headers.origin;
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "https://chatvision-kon9r2ruy-harrygit983s-projects.vercel.app",
-    "https://chatvision-di4v88y7r-harrygit983s-projects.vercel.app"
-  ];
 
-  if (allowedOrigins.includes(origin)) {
+  if (
+    origin === "http://localhost:5173" ||              // local dev
+    (origin && origin.endsWith(".vercel.app"))         // ANY Vercel deploy
+  ) {
     res.header("Access-Control-Allow-Origin", origin);
   }
 
@@ -38,11 +35,11 @@ app.use((req, res, next) => {
   );
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
 
   if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    return res.status(200).end();
   }
 
   next();
