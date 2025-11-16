@@ -157,14 +157,14 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>LectureLens VR View (Prototype)</h1>
+        <h1>✨ LectureLens VR View</h1>
         <p>Upload a lecture, then control playback and ask spoken questions.</p>
       </header>
 
-      {/* Upload section (can be done once before putting headset on) */}
+      {/* Upload section - only shown before lecture is loaded */}
       {!lectureId || !mediaUrl ? (
         <section className="panel upload-panel">
-          <h2>1. Upload lecture & slides</h2>
+          <h2>📚 Upload lecture & slides</h2>
           <form onSubmit={handleUpload} className="upload-form">
             <label>
               Lecture title
@@ -200,9 +200,10 @@ function App() {
           </form>
         </section>
       ) : (
-        <main className="vr-layout flashy-split">
+        /* SPLIT-SCREEN VIEW: Left side = lecture + transcript, Right side = Q&A chat */
+        <main className="vr-layout split-screen-active">
           <section className="vr-video-panel">
-            <h2>Lecture</h2>
+            <h2>🎥 Lecture</h2>
             <div className="vr-video-wrapper">
               <video
                 ref={videoRef}
@@ -217,21 +218,22 @@ function App() {
                 onClick={togglePlayPause}
                 disabled={!mediaUrl}
               >
-                {isPlaying ? "⏸ Pause Lecture" : "▶ Play Lecture"}
+                {isPlaying ? "⏸ Pause" : "▶ Play"}
               </button>
             </div>
+
             {transcript && (
-              <div className="transcript-panel split-transcript">
-                <h2>Transcript</h2>
+              <section className="split-transcript">
+                <h3>📝 Transcript</h3>
                 <textarea value={transcript} readOnly rows={8} />
-              </div>
+              </section>
             )}
           </section>
 
           <section className="vr-qa-panel">
-            <h2>Chat & Q&A</h2>
+            <h2>💬 Chat & Q&A</h2>
             <p className="hint">
-              Ask spoken questions about the lecture, or chat about the content.
+              Ask spoken questions about the lecture content.
             </p>
 
             <button
@@ -246,7 +248,7 @@ function App() {
 
             {question && (
               <div className="vr-question-block">
-                <h3>Recognized question</h3>
+                <h3>Your Question</h3>
                 <p>{question}</p>
               </div>
             )}
