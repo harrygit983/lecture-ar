@@ -24,6 +24,7 @@ app.use((req, res, next) => {
   const allowedOrigins = [
     "http://localhost:5173",
     "https://chatvision-kon9r2ruy-harrygit983s-projects.vercel.app",
+    "https://chatvision-di4v88y7r-harrygit983s-projects.vercel.app"
   ];
 
   if (allowedOrigins.includes(origin)) {
