@@ -1,0 +1,136 @@
+.app {
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 1rem 2rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.app-header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.panel {
+  background: #030712;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1rem;
+}
+
+.upload-panel {
+  max-width: 900px;
+  margin: 0 auto 1rem;
+}
+
+.upload-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="file"],
+textarea {
+  border-radius: 0.75rem;
+  border: 1px solid #374151;
+  padding: 0.5rem 0.75rem;
+  background: #020617;
+  color: inherit;
+}
+
+button {
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  cursor: pointer;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* VR main layout */
+.vr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.vr-video-panel,
+.vr-qa-panel {
+  background: #030712;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vr-video-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.vr-video {
+  width: 100%;
+  max-height: 360px;
+  border-radius: 1rem;
+  background: black;
+}
+
+/* Big, VR-friendly buttons */
+.vr-primary-button {
+  font-size: 1.05rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+}
+
+.vr-record-button {
+  background: #16a34a;
+}
+
+.vr-record-button.recording {
+  background: #dc2626;
+}
+
+/* Q&A blocks */
+.vr-question-block,
+.vr-answer-block {
+  background: #020617;
+  border-radius: 0.75rem;
+  border: 1px solid #374151;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.transcript-panel textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+@media (max-width: 768px) {
+  .vr-layout {
+    grid-template-columns: 1fr;
+  }
+}
