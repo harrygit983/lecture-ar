@@ -162,48 +162,47 @@ function App() {
       </header>
 
       {/* Upload section (can be done once before putting headset on) */}
-      <section className="panel upload-panel">
-        <h2>1. Upload lecture & slides</h2>
-        <form onSubmit={handleUpload} className="upload-form">
-          <label>
-            Lecture title
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Neural Networks Lecture 1"
-            />
-          </label>
+      {!lectureId || !mediaUrl ? (
+        <section className="panel upload-panel">
+          <h2>1. Upload lecture & slides</h2>
+          <form onSubmit={handleUpload} className="upload-form">
+            <label>
+              Lecture title
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g. Neural Networks Lecture 1"
+              />
+            </label>
 
-          <label>
-            Slides (PDF)
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => setSlidesFile(e.target.files[0] || null)}
-            />
-          </label>
+            <label>
+              Slides (PDF)
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => setSlidesFile(e.target.files[0] || null)}
+              />
+            </label>
 
-          <label>
-            Lecture media (audio or video)
-            <input
-              type="file"
-              accept="audio/*,video/*"
-              onChange={(e) => setMediaFile(e.target.files[0] || null)}
-            />
-          </label>
+            <label>
+              Lecture media (audio or video)
+              <input
+                type="file"
+                accept="audio/*,video/*"
+                onChange={(e) => setMediaFile(e.target.files[0] || null)}
+              />
+            </label>
 
-          <button type="submit" disabled={isUploading}>
-            {isUploading ? "Processing..." : "Upload & Index"}
-          </button>
-        </form>
-      </section>
-
-      {/* VR MAIN VIEW: video on one side, big buttons + Q&A on the other */}
-      <main className="vr-layout">
-        <section className="vr-video-panel">
-          <h2>2. Lecture</h2>
-          {mediaUrl ? (
+            <button type="submit" disabled={isUploading}>
+              {isUploading ? "Processing..." : "Upload & Index"}
+            </button>
+          </form>
+        </section>
+      ) : (
+        <main className="vr-layout flashy-split">
+          <section className="vr-video-panel">
+            <h2>Lecture</h2>
             <div className="vr-video-wrapper">
               <video
                 ref={videoRef}
@@ -221,50 +220,45 @@ function App() {
                 {isPlaying ? "⏸ Pause Lecture" : "▶ Play Lecture"}
               </button>
             </div>
-          ) : (
+            {transcript && (
+              <div className="transcript-panel split-transcript">
+                <h2>Transcript</h2>
+                <textarea value={transcript} readOnly rows={8} />
+              </div>
+            )}
+          </section>
+
+          <section className="vr-qa-panel">
+            <h2>Chat & Q&A</h2>
             <p className="hint">
-              Upload lecture media above to enable playback.
+              Ask spoken questions about the lecture, or chat about the content.
             </p>
-          )}
-        </section>
 
-        <section className="vr-qa-panel">
-          <h2>3. Ask a spoken question</h2>
-          <p className="hint">
-            In VR: look at the lecture, pause if needed, then hold this button to speak your question.
-          </p>
+            <button
+              className={`vr-primary-button vr-record-button ${
+                isRecording ? "recording" : ""
+              }`}
+              onClick={handleRecordButtonClick}
+              disabled={!lectureId}
+            >
+              {isRecording ? "⏹ Stop & Ask" : "🎙 Record Question"}
+            </button>
 
-          <button
-            className={`vr-primary-button vr-record-button ${
-              isRecording ? "recording" : ""
-            }`}
-            onClick={handleRecordButtonClick}
-            disabled={!lectureId}
-          >
-            {isRecording ? "⏹ Stop & Ask" : "🎙 Record Question"}
-          </button>
+            {question && (
+              <div className="vr-question-block">
+                <h3>Recognized question</h3>
+                <p>{question}</p>
+              </div>
+            )}
 
-          {question && (
-            <div className="vr-question-block">
-              <h3>Recognized question</h3>
-              <p>{question}</p>
-            </div>
-          )}
-
-          {answer && (
-            <div className="vr-answer-block">
-              <h3>Answer</h3>
-              <p>{answer}</p>
-            </div>
-          )}
-        </section>
-      </main>
-
-      {transcript && (
-        <section className="panel transcript-panel">
-          <h2>Transcript (for debugging / optional in VR)</h2>
-          <textarea value={transcript} readOnly rows={6} />
-        </section>
+            {answer && (
+              <div className="vr-answer-block">
+                <h3>Answer</h3>
+                <p>{answer}</p>
+              </div>
+            )}
+          </section>
+        </main>
       )}
     </div>
   );

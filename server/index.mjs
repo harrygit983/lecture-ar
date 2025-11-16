@@ -17,19 +17,39 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "chatvision-kon9r2ruy-harrygit983s-projects.vercel.app" // etc
-];
-// CORS: allow all origins for now
-app.use(
-  cors({
-    origin: true,       // reflect the request origin
-    credentials: true,  // in case you ever use cookies/auth
-  })
-);
+// ----- HARD CORS FIX: add headers manually -----
+app.use((req, res, next) => {
+  // Allow your Vercel app and local dev
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://chatvision-kon9r2ruy-harrygit983s-projects.vercel.app",
+  ];
 
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+// body parsing
 app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.send("Hello from Render backend!");
