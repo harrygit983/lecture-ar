@@ -17,29 +17,23 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "chatvision-kon9r2ruy-harrygit983s-projects.vercel.app" // etc
+];
+// CORS: allow all origins for now
+app.use(
+  cors({
+    origin: true,       // reflect the request origin
+    credentials: true,  // in case you ever use cookies/auth
+  })
+);
+
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("Hello from Render backend!");
 });
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "chatvision-kon9r2ruy-harrygit983s-projects.vercel.app" // replace with real Vercel URL
-];
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // allow non-browser tools / curl / Postman (no origin)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error("Not allowed by CORS"));
-    }
-  })
-);
-app.use(express.json());
 
 // Ensure uploads dir exists
 const uploadsDir = path.join(__dirname, "uploads");
@@ -283,6 +277,7 @@ app.post(
     }
   }
 );
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
 });
